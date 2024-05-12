@@ -12,7 +12,7 @@ The [Reuse Tool](https://reuse.software/) must be used for your samples project.
 3. The README.md file (this file):
 Please edit this file as it is the primary description file for your project. You can find some placeholder titles for sections below.
 
-# [Title]
+# Graph Learning for Code Vulnerability Detection
 <!-- Please include descriptive title -->
 
 <!--- Register repository https://api.reuse.software/register, then add REUSE badge:
@@ -20,14 +20,26 @@ Please edit this file as it is the primary description file for your project. Yo
 -->
 
 ## Description
-<!-- Please include SEO-friendly description -->
+This repository contains sample code to reproduce the research done for the bachelor thesis _"Deep Learning-Based Code Vulnerability Detection: A New Perspective"_ at SAP Security Research. 
 
-## Requirements
+The repository implements an GNN evaluation pipeline including cross-validation as well as pretraining schedules.
 
 ## Download and Installation
 
+To run the experiments, the [DiversVul dataset](https://github.com/wagner-group/diversevul) (Chen, Yizheng, et al. 2023) must be downloaded, graphs need to be parsed with the [cpg](https://github.com/Fraunhofer-AISEC/cpg) tool and python packages in ``0_install`` are required. Further, scripts in ``codegraphs/diversevul/`` produce intermediate pickle files for cross-validation and filtering large and small graphs, which ``CodeGraphDataset.py`` requires to load the datasets.
+
+## Running the experiments
+
+All configuration files can be found in ``configs/``. By switching out the filename in ``1_train.py`` different models can be run. ``2_helper_get_best_run.py`` summarizes results from cross-validation.
+
+The main test results are produced with the ``configs/7_*`` and ``configs/9_*`` files.
+
+Visualizations from the paperare made with scripts in ``utils/``
+
+Different models as well as the training script are specified in ``models``.
+
 ## Known Issues
-<!-- You may simply state "No known issues. -->
+No known issues.
 
 ## How to obtain support
 [Create an issue](https://github.com/SAP-samples/<repository-name>/issues) in this repository if you find a bug or have questions about the content.

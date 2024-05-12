@@ -1,0 +1,115 @@
+# writer
+from_saved: ''
+
+# optimizer
+device: 'cuda'
+epochs: 10000
+episodes: 1  # iterations over same minibatch of graphs
+max_iterations: 1
+profile: False
+
+OPTIM: 'AdamW'
+OPTIM_lr: 0.0008
+OPTIM_weight_decay: 0.0001
+OPTIM_stopping_patience: 1000
+batch_size: 32
+loader_batch_size: 16  # actual size for memory contstraint
+pos_class_count: 11279
+neg_class_count: 204557
+loader_add_naive_predictor: True
+save_best_model: True
+
+weight_decay: 0.001
+feature_dropout: 0
+
+# Task head:
+H: 'BinaryClassifierReadOutLayerDense'
+H_pool: 'mean'
+
+# GCN
+GNN: 'GINAdapted'
+
+global_hidden_channels: 350
+GNN_dropout: 0.5
+
+GNN_num_layers: 2
+GNN_jumping_knowledge: True
+
+# GraphStructureLearner
+GraphGLOW_only_enabled: False
+GSL: 'GraphStructureLearner'
+
+GSL_num_heads: 4
+
+GSL_attention_threshold: 0.3  # positive
+GSL_graph_regularization: True #[True, False]
+GSL_sparsity_ratio: 0.0
+GSL_skip_ratio: 0.3  # lambda in GraphGLOW, percentage of using initial adjacency matrix
+GSL_converged_threshold: 0.002 
+# GSL_resethead: 0
+GSL_mixed_precision: False  # only works for Structure Learner, not implemented for normal gnn
+
+# MULTISTEP
+MULTISTEP_enabled: True
+MULTISTEP: 'MultiStep'
+
+MULTISTEP_num_steps: 0 # how often gsl and gnn are applied
+
+MULTISTEP_same_as_GNN: False
+
+MULTISTEP_GNN: 'GINAdapted'
+MULTISTEP_hidden_channels: 384
+
+MULTISTEP_dropout: 0.5
+
+MULTISTEP_num_layers: 3
+MULTISTEP_jumping_knowledge: False
+MULTISTEP_jk_aggr: 'cat' # cat sum mean
+MULTISTEP_in_channels: 164
+# Pretraining
+PRETRAINING_enabled: True
+PRETRAINING_epochs_block1: 100
+PRETRAINING_epochs_block2: 0
+# PRETRAINING_feature_masking: True
+# PRETRAINING_link_prediction: True
+# PRETRAINING_link_classification: True
+# PRETRAINING_cwe_classification: True
+# PRETRAINING_context_prediction: True
+PRETRAINING_alternating: True
+PRETRAINING_multitaskoptim: False  # joint optimization of all pretraining tasks
+PRETRAINING_alternating_interval: 10
+PRETRAINING_block1_tasks: [link_prediction] # #feature_masking feature_masking,link_prediction  feature_masking
+  #- link_classification
+PRETRAINING_block2_tasks: [] # cwe_classification
+PRETRAINING_block1_num_steps: -1 # if >0, take this many steps per epoch
+PRETRAINING_block2_num_steps: -1
+
+PRETRAINING_feature_masking_node_probability_degree_triangle: 1
+PRETRAINING_feature_masking_node_probability_category: 0.15
+PRETRAINING_feature_masking_node_probability_wordvector: 0.3
+PRETRAINING_feature_masking_node_probability: 0.15
+PRETRAINING_link_prediction_mask_probability: 0.15
+
+PRETRAINING_optim: 'AdamW'  # only for the heads
+PRETRAINING_lr: 0.0008 # only for the heads
+PRETRAINING_weight_decay: 0.0001 # only for the heads
+PRETRAINING_batch_size: 32
+
+
+
+# use same bs as in main task
+# PRETRAINING_stopping_patience: 5
+# PRETRAINING_batch_size: 32
+# PRETRAINING_loader_batch_size: 16  # actual size for memory contstraint
+
+
+
+# Dataset
+
+DS_root: 'codegraphs/diversevul/v2_undirected_withdegreecount_unnormalized'  # folder with .pt pyg data objects
+DS_filtertype: 'larger10smaller1000' # all, larger10smaller1000, larger10, smaller1000
+DS_crossval: False
+DS_folds: 5 # don't change
+DS_cv_trainfraction: 1  # only use x*100 % of the training data of training folds
+DS_cv_valfraction: 1  # only use x*100 % of the validation data of training folds
+DS_dense_mode: True

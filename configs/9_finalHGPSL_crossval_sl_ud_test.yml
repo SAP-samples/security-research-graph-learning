@@ -1,0 +1,50 @@
+# writer
+from_saved: 'runs/20240416-124152_7_finalHGPSL_crossval_sl_ud/models/Nonebest_model.pt'
+
+# optimizer
+device: 'cuda'
+epochs: 1
+episodes: 1  # iterations over same minibatch of graphs
+max_iterations: 1
+val_split: 'test'
+OPTIM: 'Adam'
+OPTIM_lr: 0.0001
+OPTIM_weight_decay: 0.001
+OPTIM_stopping_patience: 10
+save_logits: True
+batch_size: 32
+pos_class_count: 11279
+neg_class_count: 204557
+# weight_decay: 0.0001
+feature_dropout: 0
+# save_best_model: True
+
+#HGPSL
+HGP_pooling: 0.3
+
+# Task head:
+H: ''
+H_pool: 'sum'
+
+# GCN
+GNN: 'HGPSL'
+global_hidden_channels: 128
+GNN_dropout: 0.0
+GNN_num_layers: 4
+
+
+# GraphStructureLearner
+GSL: 'GraphStructureLearner'
+GSL_num_heads: 4
+GSL_attention_threshold: 0.2  # positive  
+GSL_graph_regularization: True
+GSL_sparsity_ratio: 0.05
+GSL_skip_ratio: 0.4  # lambda in GraphGLOW, percentage of using initial adjacency matrix
+GSL_converged_threshold: 0.002
+# Dataset
+DS_root: 'codegraphs/diversevul/v2_undirected_withdegreecount'  # folder with .pt pyg data objects
+DS_filtertype: 'larger10smaller1000' # all, larger10smaller1000, larger10, smaller1000
+DS_crossval: False
+DS_folds: 5 # don't change
+DS_cv_trainfraction: 0.001  # only use x*100 % of the training data of training folds
+DS_cv_valfraction: 1  # only use x*100 % of the validation data of training folds
